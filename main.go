@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"monkey/repl"
+	"nibbl/repl"
 	"os"
 	"os/user"
 	"runtime"
 	"time"
 )
 
-const PROGRAM = "monkey"
+const PROGRAM = "nibbl"
 const VERSION = "0.1"
 
 func main() {

@@ -1,4 +1,4 @@
-# monkey
-[![build status](https://github.com/arjunmayilvaganan/monkey/actions/workflows/go.yml/badge.svg)](https://github.com/arjunmayilvaganan/monkey/actions/workflows/go.yml)
+# Nibbl
+[![build status](https://github.com/arjunmayilvaganan/nibbl/actions/workflows/go.yml/badge.svg)](https://github.com/arjunmayilvaganan/nibbl/actions/workflows/go.yml)
 
-An interpreter written in Go for the monkey programming language - https://interpreterbook.com/
+An interpreter for the Morsl programming language, written in Go
