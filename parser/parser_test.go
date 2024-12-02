@@ -6,6 +6,17 @@ import (
 	"testing"
 )
 
+func checkParserErrors(t *testing.T, p *Parser) {
+	errors := p.Errors()
+	if len(errors) != 0 {
+		t.Errorf("Parse errors encountered: %d\n", len(errors))
+		for _, msg := range errors {
+			t.Error(msg)
+		}
+		t.FailNow()
+	}
+}
+
 func TestLetStatements(t *testing.T) {
 	input := `
 let x = 5;
@@ -41,17 +52,6 @@ let foobar = 838383;
 	}
 }
 
-func checkParserErrors(t *testing.T, p *Parser) {
-	errors := p.Errors()
-	if len(errors) != 0 {
-		t.Errorf("Parse errors encountered: %d\n", len(errors))
-		for _, msg := range errors {
-			t.Error(msg)
-		}
-		t.FailNow()
-	}
-}
-
 func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 	if s.TokenLiteral() != "let" {
 		t.Errorf("Statement TokenLiteral expected=%s, got=%s", "let", s.TokenLiteral())
@@ -76,4 +76,33 @@ func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 	}
 
 	return true
+}
+
+func TestReturnStatements(t *testing.T) {
+	input := `
+return 5;
+return 10;
+return add(15);
+`
+	l := lexer.New(input)
+	p := New(l)
+
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 3 {
+		t.Fatalf("Number of statements expected=%d, got=%d",
+			3, len(program.Statements))
+	}
+
+	for _, s := range program.Statements {
+		returnStatement, ok := s.(*ast.ReturnStatement)
+		if !ok {
+			t.Errorf("s is expected=%s, got=%T", "*ast.ReturnStatement", s)
+		}
+		if returnStatement.TokenLiteral() != "return" {
+			t.Errorf("Statement TokenLiteral expected=%s, got=%s",
+				"return", returnStatement.TokenLiteral())
+		}
+	}
 }
