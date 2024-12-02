@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"nibbl/ast"
 	"nibbl/lexer"
 	"nibbl/token"
@@ -10,6 +11,16 @@ type Parser struct {
 	l         *lexer.Lexer
 	currToken token.Token
 	peekToken token.Token
+	errors    []string
+}
+
+func (p *Parser) Errors() []string {
+	return p.errors
+}
+
+func (p *Parser) peekError(t token.TokenType) {
+	msg := fmt.Sprintf("next token type expected=%s, got=%s", t, p.peekToken.Type)
+	p.errors = append(p.errors, msg)
 }
 
 func (p *Parser) nextToken() {
@@ -18,7 +29,7 @@ func (p *Parser) nextToken() {
 }
 
 func New(l *lexer.Lexer) *Parser {
-	p := &Parser{l: l}
+	p := &Parser{l: l, errors: []string{}}
 
 	// Initialize currToken and peekToken
 	p.nextToken()
@@ -84,6 +95,7 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.nextToken()
 		return true
 	} else {
+		p.peekError(t)
 		return false
 	}
 }
