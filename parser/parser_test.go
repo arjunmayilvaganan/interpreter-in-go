@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"nibbl/ast"
-	"nibbl/lexer"
+	"github.com/arjunmayilvaganan/nibbl/ast"
+	"github.com/arjunmayilvaganan/nibbl/lexer"
 	"testing"
 )
 

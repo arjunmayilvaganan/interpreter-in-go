@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"nibbl/repl"
+	"github.com/arjunmayilvaganan/nibbl/repl"
 	"os"
 	"os/user"
 	"runtime"

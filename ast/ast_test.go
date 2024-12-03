@@ -1,7 +1,7 @@
 package ast
 
 import (
-	"nibbl/token"
+	"github.com/arjunmayilvaganan/nibbl/token"
 	"testing"
 )
 

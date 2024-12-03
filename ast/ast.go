@@ -2,7 +2,7 @@ package ast
 
 import (
 	"bytes"
-	"nibbl/token"
+	"github.com/arjunmayilvaganan/nibbl/token"
 )
 
 type Node interface {

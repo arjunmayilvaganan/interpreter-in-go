@@ -3,9 +3,9 @@ package repl
 import (
 	"bufio"
 	"fmt"
+	"github.com/arjunmayilvaganan/nibbl/lexer"
+	"github.com/arjunmayilvaganan/nibbl/token"
 	"io"
-	"nibbl/lexer"
-	"nibbl/token"
 )
 
 const PROMPT = ">>"

@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"nibbl/token"
+	"github.com/arjunmayilvaganan/nibbl/token"
 )
 
 type Lexer struct {

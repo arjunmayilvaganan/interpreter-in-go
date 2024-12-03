@@ -2,9 +2,9 @@ package parser
 
 import (
 	"fmt"
-	"nibbl/ast"
-	"nibbl/lexer"
-	"nibbl/token"
+	"github.com/arjunmayilvaganan/nibbl/ast"
+	"github.com/arjunmayilvaganan/nibbl/lexer"
+	"github.com/arjunmayilvaganan/nibbl/token"
 )
 
 type Parser struct {
