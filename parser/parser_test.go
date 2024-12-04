@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"github.com/arjunmayilvaganan/nibbl/ast"
 	"github.com/arjunmayilvaganan/nibbl/lexer"
 	"testing"
@@ -159,12 +160,70 @@ func TestIntegerLiteralExpression(t *testing.T) {
 
 	literal, ok := s.Expression.(*ast.IntegerLiteral)
 	if !ok {
-		t.Errorf("s is expected=%s, got=%T", "*ast.IntegerLiteral", s)
+		t.Errorf("literal is expected=%s, got=%T", "*ast.IntegerLiteral", s)
 	}
 	if literal.Value != 5 {
-		t.Errorf("ident.Value expected=%d, got=%d", 5, literal.Value)
+		t.Errorf("literal.Value expected=%d, got=%d", 5, literal.Value)
 	}
 	if literal.TokenLiteral() != "5" {
-		t.Errorf("ident.TokenLiteral() expected=%s, got=%s", "5", literal.TokenLiteral())
+		t.Errorf("literal.TokenLiteral() expected=%s, got=%s", "5", literal.TokenLiteral())
 	}
+}
+
+func TestPrefixExpressions(t *testing.T) {
+	prefixTests := []struct {
+		input        string
+		operator     string
+		integerValue int64
+	}{
+		{"!5;", "!", 5},
+		{"-15;", "-", 15},
+	}
+
+	for _, tt := range prefixTests {
+		l := lexer.New(tt.input)
+		p := New(l)
+
+		program := p.ParseProgram()
+		checkParserErrors(t, p)
+
+		if len(program.Statements) != 1 {
+			t.Fatalf("Number of statements expected=%d, got=%d",
+				1, len(program.Statements))
+		}
+
+		s, ok := program.Statements[0].(*ast.ExpressionStatement)
+		if !ok {
+			t.Fatalf("s is expected=%s, got=%T", "*ast.ExpressionStatement", s)
+		}
+
+		expression, ok := s.Expression.(*ast.PrefixExpression)
+		if !ok {
+			t.Errorf("s is expected=%s, got=%T", "*ast.PrefixExpression", s)
+		}
+		if expression.Operator != tt.operator {
+			t.Errorf("expression.Operator expected=%s, got=%s", tt.operator, expression.Operator)
+		}
+		if !testIntegerLiteral(t, expression.Right, tt.integerValue) {
+			return
+		}
+	}
+}
+
+func testIntegerLiteral(t *testing.T, il ast.Expression, value int64) bool {
+	integ, ok := il.(*ast.IntegerLiteral)
+	if !ok {
+		t.Errorf("il was expected=%s, got=%T", "*ast.IntegerLiteral", il)
+		return false
+	}
+	if integ.Value != value {
+		t.Errorf("integ.Value was expected=%d, got=%d", value, integ.Value)
+		return false
+	}
+	if integ.TokenLiteral() != fmt.Sprintf("%d", value) {
+		t.Errorf("integ.TokenLiteral() was expected=%d, got=%s", value, integ.TokenLiteral())
+		return false
+	}
+
+	return true
 }
